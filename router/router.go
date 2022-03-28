@@ -1,6 +1,7 @@
 package router
 
 import (
+	"campmart/middlewares"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -9,9 +10,12 @@ import (
 func Router() *mux.Router {
 	r := mux.NewRouter()
 
-	r.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("Hello world"))
-	})
+	r.HandleFunc("/", middlewares.GetAllTasks).Methods(http.MethodGet, http.MethodOptions)
+	r.HandleFunc("/task", middlewares.CreateNewTask).Methods(http.MethodPost, http.MethodOptions)
+	r.HandleFunc("/task/done/{id}", middlewares.TaskDone).Methods(http.MethodPut, http.MethodOptions)
+	r.HandleFunc("/task/undo/{id}", middlewares.UndoTask).Methods(http.MethodPut, http.MethodOptions)
+	r.HandleFunc("/task/delete/{id}", middlewares.DeleteTask).Methods(http.MethodDelete, http.MethodOptions)
+	r.HandleFunc("/deletealltasks", middlewares.DeleteAllTasks).Methods(http.MethodDelete, http.MethodOptions)
 
 	return r
 }
