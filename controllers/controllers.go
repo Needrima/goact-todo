@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"encoding/json"
+	"fmt"
 	"goact-todo/middlewares"
 	"goact-todo/models"
 	"log"
@@ -54,6 +55,7 @@ func TaskDone(w http.ResponseWriter, r *http.Request) {
 
 	params := mux.Vars(r)
 	id := params["id"]
+	fmt.Println("Done:", id)
 
 	if err := middlewares.TaskDone(id); err != nil {
 		log.Println(err)
@@ -73,6 +75,7 @@ func UndoTask(w http.ResponseWriter, r *http.Request) {
 
 	params := mux.Vars(r)
 	id := params["id"]
+	fmt.Println("Undone:", id)
 
 	if err := middlewares.TaskUnDone(id); err != nil {
 		log.Println(err)
@@ -92,6 +95,7 @@ func DeleteTask(w http.ResponseWriter, r *http.Request) {
 
 	params := mux.Vars(r)
 	id := params["id"]
+	fmt.Println("Delete:", id)
 
 	if err := middlewares.DeleteTaskFromDB(id); err != nil {
 		log.Println(err)

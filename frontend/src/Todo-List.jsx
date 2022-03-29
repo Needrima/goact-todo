@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import axios from 'axios';
-import {Card, Header, Form, Icon, Input, Button} from 'semantic-ui-react';
+import {Card, Header, Form, Icon, Input} from 'semantic-ui-react';
 
 let endpoint = 'http://localhost:8080';
 
@@ -34,7 +34,7 @@ class Todolist extends Component {
                     placeholder="Add New Task"
                     >
                     </Input>
-                    <Button>Create Task</Button>
+                    {/* <Button>Create Task</Button> */}
                 </Form>
             </div>
 
@@ -51,8 +51,8 @@ class Todolist extends Component {
 
     change = (e) => {
         this.setState({
-            task: e.target.value,
-        })
+            [e.target.name]: e.target.value,
+        }) 
     }
 
     getAllTasks = () => {
@@ -83,6 +83,13 @@ class Todolist extends Component {
                                         color='blue'
                                         onClick={() => this.updateTask(item._id)}
                                         />
+                                        <span style={{paddingRight: 10}}>Done</span>
+
+                                        <Icon 
+                                        name='undo'
+                                        color='yellow'
+                                        onClick={() => this.undoTask(item._id)}
+                                        />
                                         <span style={{paddingRight: 10}}>Undo</span>
 
                                         <Icon 
@@ -106,7 +113,7 @@ class Todolist extends Component {
     }
 
     updateTask = (id) => {
-        axios.put(endpoint+"/task/done"+id, {
+        axios.put(endpoint+"/task/done/"+id, {
             headers: {
                 "Content-Type:": "application/x-www-form-urlencoded",
             }, 
@@ -117,7 +124,7 @@ class Todolist extends Component {
     }
 
     undoTask = (id) => {
-        axios.put(endpoint+"/task/undo"+id, {
+        axios.put(endpoint+"/task/undo/"+id, {
             headers: {
                 "Content-Type:": "application/x-www-form-urlencoded",
             }, 
@@ -128,7 +135,7 @@ class Todolist extends Component {
     }
 
     deleteTask = (id) => {
-        axios.delete(endpoint+"task/delete/"+id, {
+        axios.delete(endpoint+"/task/delete/"+id, {
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded",
             }
@@ -150,7 +157,7 @@ class Todolist extends Component {
                     },
                 }
             ).then(res => {
-                this.getAllTasks()
+                 this.getAllTasks()
 
                 this.setState({
                     task: "",
